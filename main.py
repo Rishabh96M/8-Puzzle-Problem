@@ -35,7 +35,7 @@ def BFS(init, end):
             new_node = swap_ele(curr_node, (row, col), (row + 1, col))
             if new_node not in visited:
                 visited.append(new_node)
-                parent_index.append(visited.index(curr_node))
+                parent_index.append(visited.index(curr_node) + 1)
                 if (new_node == end):
                     break
                 queue.insert(0, new_node)
@@ -45,7 +45,7 @@ def BFS(init, end):
             new_node = swap_ele(curr_node, (row, col), (row - 1, col))
             if new_node not in visited:
                 visited.append(new_node)
-                parent_index.append(visited.index(curr_node))
+                parent_index.append(visited.index(curr_node) + 1)
                 if (new_node == end):
                     break
                 queue.insert(0, new_node)
@@ -55,7 +55,7 @@ def BFS(init, end):
             new_node = swap_ele(curr_node, (row, col), (row, col + 1))
             if new_node not in visited:
                 visited.append(new_node)
-                parent_index.append(visited.index(curr_node))
+                parent_index.append(visited.index(curr_node) + 1)
                 if (new_node == end):
                     break
                 queue.insert(0, new_node)
@@ -65,7 +65,7 @@ def BFS(init, end):
             new_node = swap_ele(curr_node, (row, col), (row, col - 1))
             if new_node not in visited:
                 visited.append(new_node)
-                parent_index.append(visited.index(curr_node))
+                parent_index.append(visited.index(curr_node) + 1)
                 if (new_node == end):
                     break
                 queue.insert(0, new_node)
@@ -78,22 +78,34 @@ def backtracking(visited, parent_index):
     curr_node = visited[-1]
     path = []
     p_idx = 1
-    node_idx = []
     while p_idx:
         path.append(curr_node)
-        node_idx.append(visited.index(curr_node))
-        p_idx = parent_index[visited.index(curr_node)]
+        p_idx = parent_index[visited.index(curr_node) - 1]
         curr_node = visited[p_idx]
     path.append(curr_node)
-    print(path[::-1])
-    print(node_idx[::-1])
+    return path[::-1]
 
 
 if __name__ == '__main__':
-    # start = [[1, 4, 7], [5, 0, 8], [2, 3, 6]]
-    start = [[4, 7, 0], [1, 2, 8], [3, 5, 6]]
-
-    goal = [[1, 4, 7], [2, 5, 8], [3, 6, 0]]
+    start = [[1, 0, 3], [4, 2, 5], [7, 8, 6]]
+    goal = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
 
     visited, parent_index = BFS(start, goal)
-    backtracking(visited, parent_index)
+    path = backtracking(visited, parent_index)
+
+    with open('nodePath.txt', 'w') as f:
+        for line in path:
+            line = [[row[i] for row in line] for i in range(len(line[0]))]
+            line = str(line).replace('[', '').replace(']', '').replace(',', '')
+            f.write(line + '\n')
+
+    with open('Nodes.txt', 'w') as f:
+        for line in visited:
+            line = [[row[i] for row in line] for i in range(len(line[0]))]
+            line = str(line).replace('[', '').replace(']', '').replace(',', '')
+            f.write(line + '\n')
+
+    with open('NodesInfo.txt', 'w') as f:
+        for i in range(len(visited)):
+            line = str(i + 1) + ' ' + str(parent_index[i]) + " 0"
+            f.write(line + '\n')
