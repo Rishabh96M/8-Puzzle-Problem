@@ -179,6 +179,7 @@ if __name__ == '__main__':
             f.write(line + '\n')
 
     with open('NodesInfo.txt', 'w') as f:
+        f.write("Node_index   Parent_Node_index   Cost\n")
         for i in range(len(visited)):
             line = str(i + 1) + ' ' + str(parent_index[i]) + " 0"
             f.write(line + '\n')
