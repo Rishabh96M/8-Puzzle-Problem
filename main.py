@@ -157,7 +157,7 @@ def backtracking(visited, parent_index):
 
 if __name__ == '__main__':
     # Starting Node in the row wise format
-    start = [[1, 0, 3], [4, 2, 5], [7, 8, 6]]
+    start = [[4, 1, 3], [7, 2, 5], [0, 8, 6]]
 
     # Goal Node in the row wise format
     goal = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
