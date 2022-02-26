@@ -51,6 +51,36 @@ def position(x, arr):
     return -1, -1
 
 
+def checkNode(new_node, curr_node, visited, parent_index, queue, end):
+    """
+    Definition
+    ---
+    A method to check if the new node has already been visited or is the goal
+    position
+
+    Parameters
+    ---
+    new_node : Node to check
+    curr_node : parent node of new node
+    Visited : A list of all the visited nodes in order
+    parent_index : A list of parent indices for elements stored in visited
+    queue : Queue of all the nodes left to check
+    end : Traget Node
+
+    Returns
+    ---
+    flag : True or False based on if the new node is the end node
+    queue : Queue of all the nodes left to check
+    """
+    if new_node not in visited:
+        visited.append(new_node)
+        parent_index.append(visited.index(curr_node) + 1)
+        if (new_node == end):
+            return True, queue
+        queue.insert(0, new_node)
+    return False, queue
+
+
 def BFS(init, end):
     """
     Definition
@@ -80,46 +110,34 @@ def BFS(init, end):
         if (row + 1) < 3:
             # Move Up
             new_node = swap_ele(curr_node, (row, col), (row + 1, col))
-            if new_node not in visited:
-                visited.append(new_node)
-                parent_index.append(visited.index(curr_node) + 1)
-                if (new_node == end):
-                    flag = True
-                    break
-                queue.insert(0, new_node)
+            flag, queue = checkNode(
+                new_node, curr_node, visited, parent_index, queue, end)
+            if(flag):
+                break
 
         if (row - 1) > -1:
             # Move Down
             new_node = swap_ele(curr_node, (row, col), (row - 1, col))
-            if new_node not in visited:
-                visited.append(new_node)
-                parent_index.append(visited.index(curr_node) + 1)
-                if (new_node == end):
-                    flag = True
-                    break
-                queue.insert(0, new_node)
+            flag, queue = checkNode(
+                new_node, curr_node, visited, parent_index, queue, end)
+            if(flag):
+                break
 
         if (col + 1) < 3:
             # Move Left
             new_node = swap_ele(curr_node, (row, col), (row, col + 1))
-            if new_node not in visited:
-                visited.append(new_node)
-                parent_index.append(visited.index(curr_node) + 1)
-                if (new_node == end):
-                    flag = True
-                    break
-                queue.insert(0, new_node)
+            flag, queue = checkNode(
+                new_node, curr_node, visited, parent_index, queue, end)
+            if(flag):
+                break
 
         if (col - 1) > -1:
             # Move Right
             new_node = swap_ele(curr_node, (row, col), (row, col - 1))
-            if new_node not in visited:
-                visited.append(new_node)
-                parent_index.append(visited.index(curr_node) + 1)
-                if (new_node == end):
-                    flag = True
-                    break
-                queue.insert(0, new_node)
+            flag, queue = checkNode(
+                new_node, curr_node, visited, parent_index, queue, end)
+            if(flag):
+                break
 
     if(flag):
         print('Path Found, Please check the generated text files')
